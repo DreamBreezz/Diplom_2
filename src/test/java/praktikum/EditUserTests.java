@@ -17,9 +17,12 @@ public class EditUserTests {
     private final UserRests userRest = new UserRests();
     private final EditUserJsonGenerator editUserJson = new EditUserJsonGenerator();
     private final Check check = new Check();
+    private final Action action = new Action();
 
     CreateUserRequestJson newUser;
     private String accessToken;
+    private String accessToken2;
+
 
     @Before
     @DisplayName("[+] Создание пользователя")
@@ -28,7 +31,7 @@ public class EditUserTests {
         ValidatableResponse createUserResponse = userRest.create(newUser);  // создание пользователя
 
         check.code201andSuccess(createUserResponse);  // проверка кода и сообщения создания
-        accessToken = check.extractAccessToken(createUserResponse);  // сохранение токена пользователя
+        accessToken = action.extractAccessToken(createUserResponse);  // сохранение токена пользователя
     }
 
     @After
@@ -39,6 +42,12 @@ public class EditUserTests {
             check.code202andSuccess(creationResponse);
             check.userRemovedMessage(creationResponse);
             accessToken = null;
+        }
+        if (accessToken2 != null) {
+            ValidatableResponse creationResponse = userRest.delete(accessToken2);
+            check.code202andSuccess(creationResponse);
+            check.userRemovedMessage(creationResponse);
+            accessToken2 = null;
         }
     }
 
@@ -82,7 +91,7 @@ public class EditUserTests {
         ValidatableResponse createUserResponse2 = userRest.create(newUser2);  // создание второго пользователя
 
         check.code201andSuccess(createUserResponse2);  // проверка кода и сообщения создания второго пользователя
-        String accessToken2 = check.extractAccessToken(createUserResponse2);  // сохранение токена пользователя
+        accessToken2 = action.extractAccessToken(createUserResponse2);  // сохранение токена пользователя
 
         // попытка смены email второму пользователю
         var userExistsEmail = editUserJson.setExistsEmail(newUser, newUser2);  // создание json для изменения второго пользователя
@@ -90,11 +99,5 @@ public class EditUserTests {
 
         check.code403andSuccessFalse(editUser2Response); // получение кода ошибки редактирования второго пользователя
         check.emailAlreadyExistsMessage(editUser2Response); // получения сообщения ошибки создания второго пользователя
-
-        // удаление второго пользователя
-        ValidatableResponse creationResponse = userRest.delete(accessToken2);
-        check.code202andSuccess(creationResponse);
-        check.userRemovedMessage(creationResponse);
-        accessToken2 = null; // обнуление второго токена – на всякий случай
     }
 }

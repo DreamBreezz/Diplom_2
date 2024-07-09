@@ -6,8 +6,6 @@ import org.junit.Assert;
 import praktikum.jsons.CreateUserRequestJson;
 import praktikum.jsons.UserRequestJson;
 
-import java.util.ArrayList;
-
 import static java.net.HttpURLConnection.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -19,16 +17,6 @@ public class Check {
     public void code201andSuccess(ValidatableResponse response) {
         response.assertThat().statusCode(HTTP_OK)
                 .body("success", is(true));
-    }
-
-    @Step("Сохранение токена авторизации")
-    public String extractAccessToken(ValidatableResponse response) {
-        return response.extract().path("accessToken");
-    }
-
-    @Step("Сохранение списка ингредиентов")
-    public ArrayList<String> extractIngredients(ValidatableResponse response) {
-        return response.extract().path("data._id");
     }
 
     @Step("Код ответа: 200 OK")
@@ -126,13 +114,8 @@ public class Check {
         response.body("message", is(NO_INGREDIENTS));
     }
 
-    @Step("Имя при авторизации корректно")
-    public int saveOrderNumber(ValidatableResponse response) {
-        return response.extract().path("order.number");
-    }
-
-    @Step("Номер заказа корректный")
-    public void orderNumberCorrect(int orderNumber, ValidatableResponse response) {
+    @Step("Номер заказа в ответе такой же, как и в запросе")
+    public void orderNumbersInRequestAndResponseAreTheSame(int orderNumber, ValidatableResponse response) {
         int o = response.extract().path("orders.number[0]");
         Assert.assertEquals(o, orderNumber);
     }

@@ -18,6 +18,7 @@ public class CreateOrderTests {
     private final CreateUserJsonGenerator userJson = new CreateUserJsonGenerator();
     private final UserRests userRest = new UserRests();
     private final Check check = new Check();
+    private final Action action = new Action();
     private final OrderRests orderRests = new OrderRests();
     private final CreateOrderJsonGenerator orderJson = new CreateOrderJsonGenerator();
 
@@ -32,11 +33,11 @@ public class CreateOrderTests {
         ValidatableResponse createUserResponse = userRest.create(newUser);  // создание пользователя
 
         check.code201andSuccess(createUserResponse);  // проверка кода и сообщения создания
-        accessToken = check.extractAccessToken(createUserResponse);  // сохранение токена пользователя
+        accessToken = action.extractAccessToken(createUserResponse);  // сохранение токена пользователя
 
         ValidatableResponse createIngredientsResponse = orderRests.getIngredients();  // запрос списка ингредиентов
         check.code200andSuccess(createIngredientsResponse);
-        ingredients = check.extractIngredients(createIngredientsResponse);  // сохранение списка ингредиентов
+        ingredients = action.extractIngredients(createIngredientsResponse);  // сохранение списка ингредиентов
 
         System.out.println("\nAvailable ingredient id's:"); // вывод ингредиентов списком, для красоты
         ingredients.forEach(System.out::println);
@@ -103,13 +104,13 @@ public class CreateOrderTests {
 
         check.code200andSuccess(newOrder);
         check.orderNumberNotNull(newOrder);
-        orderNumber = check.saveOrderNumber(newOrder);
+        orderNumber = action.saveOrderNumber(newOrder);
 
         ValidatableResponse orderList = orderRests.getOrdersList(accessToken);
 
         check.code200andSuccess(orderList);
         check.orderListIsNotNull(orderList);
-        check.orderNumberCorrect(orderNumber, orderList);
+        check.orderNumbersInRequestAndResponseAreTheSame(orderNumber, orderList);
     }
 
     @Test
@@ -120,7 +121,7 @@ public class CreateOrderTests {
 
         check.code200andSuccess(newOrder);
         check.orderNumberNotNull(newOrder);
-        orderNumber = check.saveOrderNumber(newOrder);
+        orderNumber = action.saveOrderNumber(newOrder);
 
         ValidatableResponse orderList = orderRests.getOrdersList("");
 

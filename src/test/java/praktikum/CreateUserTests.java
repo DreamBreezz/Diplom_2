@@ -13,6 +13,7 @@ public class CreateUserTests {
     private final CreateUserJsonGenerator userJson = new CreateUserJsonGenerator();
     private final UserRests userRest = new UserRests();
     private final Check check = new Check();
+    private final Action action = new Action();
 
     private String accessToken;
 
@@ -34,7 +35,7 @@ public class CreateUserTests {
         ValidatableResponse createUserResponse = userRest.create(newUser);  // создание пользователя
 
         check.code201andSuccess(createUserResponse);  // проверка кода и сообщения создания
-        accessToken = check.extractAccessToken(createUserResponse);  // сохранение токена пользователя
+        accessToken = action.extractAccessToken(createUserResponse);  // сохранение токена пользователя
     }
 
     @Test
