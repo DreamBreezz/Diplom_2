@@ -8,6 +8,7 @@ import org.junit.Test;
 import praktikum.rests.UserRests;
 import praktikum.jsons.generators.CreateUserJsonGenerator;
 
+@DisplayName("Создание пользователя")
 public class CreateUserTests {
 
     private final CreateUserJsonGenerator userJson = new CreateUserJsonGenerator();

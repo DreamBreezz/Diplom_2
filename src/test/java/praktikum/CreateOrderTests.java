@@ -13,6 +13,7 @@ import praktikum.rests.UserRests;
 
 import java.util.ArrayList;
 
+@DisplayName("Создание заказа")
 public class CreateOrderTests {
 
     private final CreateUserJsonGenerator userJson = new CreateUserJsonGenerator();

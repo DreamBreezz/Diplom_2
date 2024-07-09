@@ -11,6 +11,7 @@ import praktikum.jsons.generators.CreateUserJsonGenerator;
 import praktikum.jsons.generators.EditUserJsonGenerator;
 import praktikum.rests.UserRests;
 
+@DisplayName("Редактирование пользователя")
 public class EditUserTests {
 
     private final CreateUserJsonGenerator userJson = new CreateUserJsonGenerator();
