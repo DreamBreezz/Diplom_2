@@ -41,10 +41,11 @@ public class CreateUserTests {
 
     @Test
     @DisplayName("[-] Создание уже существующего пользователя")
-    public void createExistUser() {
+    public void createExistsUser() {
         var newUser = userJson.random();
         ValidatableResponse createUserResponse = userRest.create(newUser);
         check.code201andSuccess(createUserResponse);
+        accessToken = action.extractAccessToken(createUserResponse);
 
         ValidatableResponse userExistsResponse = userRest.create(newUser);  // попытка создания второго такого же юзера
         check.code403andSuccessFalse(userExistsResponse);
