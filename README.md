@@ -1,6 +1,6 @@
-# Diplom_1
+# Diplom_2
 
-Втораяl часть дипломного проекта курса QA Java Automation в Яндекс.Практикум.
+Вторая часть дипломного проекта курса QA Java Automation в Яндекс.Практикум.
 
 Цель проекта — создать API-тесты для нескольких ручек сайта
 [Stellar Burgers](https://stellarburgers.nomoreparties.site/).
